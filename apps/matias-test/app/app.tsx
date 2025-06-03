@@ -1,11 +1,4 @@
-import NxWelcome from './nx-welcome';
+import Home from './components/App';
 
-export function App() {
-  return (
-    <div>
-      <NxWelcome title="@matias-test/matias-test" />
-    </div>
-  );
-}
 
-export default App;
+export default Home;

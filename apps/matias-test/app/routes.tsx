@@ -1,6 +1,12 @@
-import { type RouteConfig, index, route } from "@react-router/dev/routes";
+import { type RouteConfig, index, layout, route,  } from "@react-router/dev/routes";
 
 export default [
-  index('./app.tsx'),
-  route('about', './routes/about.tsx')
-  ] satisfies RouteConfig;
+  layout('./components/App.tsx', [
+    index('./components/pages/Home.tsx'),
+    route('users/:id/edit', './components/pages/UserEdit.tsx'),
+    route('users/:id', './components/pages/User.tsx'),
+    route('users', './components/pages/Users.tsx'),
+    route('about', './components/pages/About.tsx'),
+    // Catch-all route for unmatched URLs
+    route('*', './components/pages/NotFound.tsx')
+  ])] satisfies RouteConfig;

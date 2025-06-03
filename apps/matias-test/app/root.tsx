@@ -7,6 +7,7 @@ import {
   type MetaFunction,
   type LinksFunction,
 } from 'react-router';
+import '../styles.css';
 
 import { AppNav } from './app-nav';
 
