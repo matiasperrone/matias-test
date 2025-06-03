@@ -64,13 +64,9 @@ export const resolvePathWithParams = (routePath: string, currentPath: string): s
   const routeParts = routePath.split('/');
   const pathParts = currentPath.split('/');
 
-  if (routeParts.length !== pathParts.length) return routePath;
-
   const resolvedParts = routeParts.map((part, index) => {
-    console.log(`Resolving part: "${part}" with index: ${index} and pathPart: "${pathParts[index] ?? 'N/A'}"`, {routePath, currentPath});
-    return part.startsWith(':') ? pathParts[index] : part;
+    return part.startsWith(':') ? (pathParts[index] ?? part) : part;
   }).join('/');
-  console.log(`Resolved path: "${resolvedParts}" from routePath: "${routePath}" and currentPath: "${currentPath}"`);
   return resolvedParts;
 };
 
@@ -79,7 +75,9 @@ export const buildBreadcrumbTrail = (currentPath: string): RouteConfig[] => {
   const trail: RouteConfig[] = [];
   const currentRoute = getRouteConfigByPattern(currentPath);
 
-  if (!currentRoute) return trail;
+  if (!currentRoute) {
+    return trail;
+  }
 
   // Build trail by following parent paths recursively
   const buildTrailRecursive = (route: RouteConfig, path: string): void => {
