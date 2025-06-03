@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nx run matias-test:dev"
   },
+  "packageManager": "bun@1.1.30",
   "private": true,
   "dependencies": {
     "@react-router/node": "^7.2.0",
