@@ -1,11 +1,3 @@
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-// Create __dirname equivalent for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-
 // Note: If you use library-specific PostCSS/Tailwind configuration then you should remove the `postcssConfig` build
 // option from your application's configuration (i.e. project.json).
 //
@@ -13,9 +5,7 @@ const __dirname = dirname(__filename);
 
 export default {
   plugins: {
-    tailwindcss: {
-      config: join(__dirname, 'tailwind.config.js'),
-    },
+    tailwindcss: {},
     autoprefixer: {},
   },
 };
