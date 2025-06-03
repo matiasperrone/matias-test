@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "name": "workspace-generators",
+  "schematics": {
+    "rr7-app": {
+      "factory": "./rr7-app/generator#default",
+      "schema": "./rr7-app/schema.json",
+      "description": "Generate a React Router 7 application",
+      "aliases": ["rr7", "react-router-app"]
+    }
+  }
+}

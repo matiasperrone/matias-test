@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "RR7App",
+  "title": "React Router 7 App Generator",
+  "type": "object",
+  "description": "Create a new React Router 7 application with the established project structure and conventions.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the application.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the application?",
+      "pattern": "^[a-zA-Z].*$"
+    },
+    "directory": {
+      "type": "string",
+      "description": "The directory of the new application.",
+      "alias": "dir"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the application (used for linting).",
+      "alias": "t"
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "description": "Test runner to use for unit tests.",
+      "enum": ["vitest", "none"],
+      "default": "vitest"
+    },
+    "e2eTestRunner": {
+      "type": "string",
+      "description": "Test runner to use for end to end (E2E) tests.",
+      "enum": ["playwright", "cypress", "none"],
+      "default": "none"
+    },
+    "linter": {
+      "description": "The tool to use for running lint checks.",
+      "type": "string",
+      "enum": ["eslint", "none"],
+      "default": "eslint"
+    },
+    "skipFormat": {
+      "description": "Skip formatting files.",
+      "type": "boolean",
+      "default": false,
+      "x-priority": "internal"
+    },
+    "skipPackageJson": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not add dependencies to `package.json`.",
+      "x-priority": "internal"
+    },
+    "rootProject": {
+      "description": "Create the application at the root of the workspace",
+      "type": "boolean",
+      "default": false,
+      "hidden": true
+    }
+  },
+  "required": ["name"],
+  "additionalProperties": false
+}

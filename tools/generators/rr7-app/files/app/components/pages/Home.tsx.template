@@ -1,0 +1,50 @@
+import React from 'react';
+import { Link } from 'react-router';
+import { HomeProps } from '@/types';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from '@/components/ui';
+
+const Home: React.FC<HomeProps> = ({ title }) => {
+  return (
+    <div className="container mx-auto p-6 max-w-6xl">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold tracking-tight mb-4">{title}</h1>
+        <p className="text-xl text-muted-foreground">Welcome to the home page!</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Navigation</CardTitle>
+          <CardDescription>Explore the application</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <nav className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-3">
+              <Link to="/about" className="block">
+                <Button variant="outline" className="w-full h-auto p-4 flex flex-col items-start space-y-2">
+                  <span className="font-semibold">About</span>
+                  <span className="text-sm text-muted-foreground">Learn more about this application</span>
+                </Button>
+              </Link>
+
+              <Link to="/users" className="block">
+                <Button variant="outline" className="w-full h-auto p-4 flex flex-col items-start space-y-2">
+                  <span className="font-semibold">Users (with Search)</span>
+                  <span className="text-sm text-muted-foreground">View users with enhanced search functionality</span>
+                </Button>
+              </Link>
+
+              <Link to="/missing-page" className="block">
+                <Button variant="outline" className="w-full h-auto p-4 flex flex-col items-start space-y-2">
+                  <span className="font-semibold">Not found</span>
+                  <span className="text-sm text-muted-foreground">A missing page demo</span>
+                </Button>
+              </Link>
+            </div>
+          </nav>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default Home;

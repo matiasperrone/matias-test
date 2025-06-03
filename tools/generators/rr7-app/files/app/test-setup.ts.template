@@ -1,0 +1,2 @@
+<% if (unitTestRunner === 'vitest') { %>import '@testing-library/jest-dom/vitest';
+<% } %>
