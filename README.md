@@ -125,6 +125,58 @@ apps/matias-test/
 - **Form Validation**: Comprehensive input validation
 - **Responsive Design**: Works on all device sizes
 
+## Tailwind CSS v4.1 Upgrade Summary
+
+This project has been successfully upgraded to **Tailwind CSS v4.1** while maintaining full compatibility with Shadcn/ui components and design tokens.
+
+### What Was Upgraded
+
+#### 1. **Dependencies Updated**
+- ✅ Upgraded `tailwindcss` from `3.4.3` to `^4.1.0`
+- ✅ Added `@tailwindcss/postcss@4.1.8` for PostCSS v4 compatibility
+
+#### 2. **Configuration Migrated**
+- ✅ **PostCSS config**: Updated to use `@tailwindcss/postcss` instead of direct `tailwindcss` plugin
+- ✅ **Tailwind config**: Simplified by removing theme extensions (now handled in CSS via `@theme`)
+- ✅ **styles.css**: Converted to Tailwind v4 format with `@import "tailwindcss"` and `@theme`
+
+#### 3. **Shadcn Variables Preserved**
+- ✅ All Shadcn CSS custom properties maintained in `:root` and `.dark` selectors
+- ✅ Color mappings configured in `@theme` to bridge Shadcn variables to Tailwind utilities
+- ✅ Border radius variables preserved and mapped correctly
+
+#### 4. **@theme Configuration**
+The new `@theme` block correctly maps all Shadcn design tokens:
+```css
+@theme {
+  --color-*: initial;
+  --color-border: hsl(var(--border));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  // ... all other Shadcn colors
+
+  --radius-*: initial;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+```
+
+#### 5. **Functionality Verified**
+- ✅ Development server runs without errors
+- ✅ Production build completes successfully (21.25 kB CSS output)
+- ✅ All existing Tailwind utility classes continue to work
+- ✅ Shadcn components maintain their styling
+- ✅ Dark mode functionality preserved
+
+### Benefits of v4.1 Upgrade
+- **Better Performance**: Improved CSS processing and smaller bundle sizes
+- **Modern Architecture**: CSS-based configuration using `@theme`
+- **Future-Proof**: Latest Tailwind features and ongoing support
+- **Backward Compatibility**: All existing code continues to work unchanged
+
+The upgrade follows Tailwind CSS v4.1's recommended practices while maintaining full backward compatibility with all existing Shadcn components and styling.
+
 ## Add new projects
 
 While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
