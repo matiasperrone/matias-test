@@ -11,7 +11,7 @@ export async function rr7AppGenerator(
   tree: Tree,
   options: Rr7AppGeneratorSchema
 ) {
-  const projectRoot = `libs/${options.name}`;
+  const projectRoot = `apps/${options.name}`;
   addProjectConfiguration(tree, options.name, {
     root: projectRoot,
     projectType: 'library',

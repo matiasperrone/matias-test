@@ -1,0 +1,11 @@
+import { reactRouter } from '@react-router/dev/vite';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  plugins: [reactRouter()]<% if (unitTestRunner === 'vitest') { %>,
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./app/test-setup.ts'],
+  }<% } %>
+});
