@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "rr7-app": {
+      "factory": "./dist/generators/rr7-app",
+      "schema": "./dist/generators/schema.json",
+      "description": "rr7-app generator"
+    }
+  }
+}

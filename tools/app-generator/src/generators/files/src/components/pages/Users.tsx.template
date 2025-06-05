@@ -1,0 +1,123 @@
+import React, { useMemo } from 'react';
+import { Link } from 'react-router';
+import { useUserList } from '@/hooks';
+import { useUserStore } from '@/stores';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
+
+const Users: React.FC = () => {
+  const { users, isLoading, error, deleteUser, clearError } = useUserList();
+  const { searchTerm, setSearchTerm } = useUserStore();
+
+  const filteredUsers = useMemo(() => {
+    if (!searchTerm) return users;
+
+    return users.filter(user =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.bio.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [users, searchTerm]);
+
+  const handleDelete = async (id: string, name: string) => {
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      try {
+        await deleteUser(id);
+      } catch (error) {
+        console.error('Failed to delete user:', error);
+      }
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <Card className="border-destructive">
+          <CardHeader>
+            <CardTitle className="text-destructive">Error</CardTitle>
+            <CardDescription>{error}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={clearError}>Try Again</Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto p-6 max-w-6xl">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl">Users</CardTitle>
+          <CardDescription>
+            Manage users in the application ({filteredUsers.length} of {users.length} users)
+          </CardDescription>
+
+          <div className="flex gap-4">
+            <Input
+              placeholder="Search users..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
+        </CardHeader>
+
+        <CardContent>
+          {isLoading ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">Loading users...</p>
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">
+                {searchTerm ? 'No users found matching your search.' : 'No users found.'}
+              </p>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Age</TableHead>
+                  <TableHead>Bio</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.age}</TableCell>
+                    <TableCell className="max-w-md truncate">{user.bio}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Link to={`/users/${user.id}`}>
+                          <Button variant="outline" size="sm">View</Button>
+                        </Link>
+                        <Link to={`/users/${user.id}/edit`}>
+                          <Button variant="outline" size="sm">Edit</Button>
+                        </Link>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(user.id, user.name)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default Users;

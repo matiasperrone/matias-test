@@ -1,0 +1,212 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router';
+import { useUser } from '@/hooks';
+import { UserData, ValidationErrors } from '@/types';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input, Label } from '@/components/ui';
+
+const UserEdit: React.FC = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { selectedUser, isLoading, error, updateUser, clearError } = useUser(id);
+
+  const [formData, setFormData] = useState<Omit<UserData, 'id'>>({
+    name: '',
+    email: '',
+    age: 0,
+    bio: ''
+  });
+
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (selectedUser) {
+      setFormData({
+        name: selectedUser.name,
+        email: selectedUser.email,
+        age: selectedUser.age,
+        bio: selectedUser.bio
+      });
+    }
+  }, [selectedUser]);
+
+  const validateForm = (): boolean => {
+    const errors: ValidationErrors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email is invalid';
+    }
+
+    if (formData.age < 1 || formData.age > 120) {
+      errors.age = 'Age must be between 1 and 120';
+    }
+
+    if (!formData.bio.trim()) {
+      errors.bio = 'Bio is required';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm() || !selectedUser) return;
+
+    setIsSaving(true);
+    try {
+      await updateUser({
+        ...formData,
+        id: selectedUser.id
+      });
+      navigate(`/users/${selectedUser.id}`);
+    } catch (error) {
+      console.error('Failed to update user:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <Card className="border-destructive">
+          <CardHeader>
+            <CardTitle className="text-destructive">Error</CardTitle>
+            <CardDescription>{error}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-2">
+              <Button onClick={clearError}>Try Again</Button>
+              <Link to="/users">
+                <Button variant="outline">Back to Users</Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <Card>
+          <CardContent className="text-center py-8">
+            <p className="text-muted-foreground">Loading user...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!selectedUser) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <Card>
+          <CardHeader>
+            <CardTitle>User Not Found</CardTitle>
+            <CardDescription>The user you're trying to edit doesn't exist.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link to="/users">
+              <Button>Back to Users</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto p-6 max-w-6xl">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl">Edit User</CardTitle>
+          <CardDescription>Update user information</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className={validationErrors.name ? 'border-destructive' : ''}
+                />
+                {validationErrors.name && (
+                  <p className="text-sm text-destructive">{validationErrors.name}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className={validationErrors.email ? 'border-destructive' : ''}
+                />
+                {validationErrors.email && (
+                  <p className="text-sm text-destructive">{validationErrors.email}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="age">Age</Label>
+              <Input
+                id="age"
+                type="number"
+                min="1"
+                max="120"
+                value={formData.age}
+                onChange={(e) => setFormData({ ...formData, age: parseInt(e.target.value) || 0 })}
+                className={validationErrors.age ? 'border-destructive' : ''}
+              />
+              {validationErrors.age && (
+                <p className="text-sm text-destructive">{validationErrors.age}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bio">Bio</Label>
+              <textarea
+                id="bio"
+                rows={4}
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                className={`flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${validationErrors.bio ? 'border-destructive' : ''}`}
+                placeholder="Tell us about yourself..."
+              />
+              {validationErrors.bio && (
+                <p className="text-sm text-destructive">{validationErrors.bio}</p>
+              )}
+            </div>
+
+            <div className="flex gap-2 pt-4">
+              <Button type="submit" disabled={isSaving}>
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </Button>
+              <Link to={`/users/${selectedUser.id}`}>
+                <Button type="button" variant="outline">Cancel</Button>
+              </Link>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default UserEdit;

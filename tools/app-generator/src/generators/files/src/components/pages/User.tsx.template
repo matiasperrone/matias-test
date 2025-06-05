@@ -1,0 +1,99 @@
+import React from 'react';
+import { useParams, Link } from 'react-router';
+import { useUser } from '@/hooks';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from '@/components/ui';
+
+const User: React.FC = () => {
+  const { id } = useParams();
+  const { selectedUser, isLoading, error, clearError } = useUser(id);
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <Card className="border-destructive">
+          <CardHeader>
+            <CardTitle className="text-destructive">Error</CardTitle>
+            <CardDescription>{error}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-2">
+              <Button onClick={clearError}>Try Again</Button>
+              <Link to="/users">
+                <Button variant="outline">Back to Users</Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <Card>
+          <CardContent className="text-center py-8">
+            <p className="text-muted-foreground">Loading user...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!selectedUser) {
+    return (
+      <div className="container mx-auto p-6 max-w-6xl">
+        <Card>
+          <CardHeader>
+            <CardTitle>User Not Found</CardTitle>
+            <CardDescription>The user you're looking for doesn't exist.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link to="/users">
+              <Button>Back to Users</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto p-6 max-w-6xl">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl">{selectedUser.name}</CardTitle>
+          <CardDescription>User Profile</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Email</h3>
+              <p className="mt-1">{selectedUser.email}</p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Age</h3>
+              <p className="mt-1">{selectedUser.age} years old</p>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Bio</h3>
+            <p className="mt-1 text-foreground">{selectedUser.bio}</p>
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Link to={`/users/${selectedUser.id}/edit`}>
+              <Button>Edit User</Button>
+            </Link>
+            <Link to="/users">
+              <Button variant="outline">Back to Users</Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default User;
