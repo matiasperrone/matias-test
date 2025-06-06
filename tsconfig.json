@@ -8,6 +8,9 @@
     },
     {
       "path": "./tools/app-generator"
+    },
+    {
+      "path": "./apps"
     }
   ]
 }

@@ -1,0 +1,37 @@
+{
+  "name": "create-rr7-shadcn-app",
+  "version": "0.0.1",
+  "type": "module",
+  "module": "./dist/index.js",
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "@nx/js:tsc",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "apps/dist",
+          "main": "apps/bin/index.ts",
+          "tsConfig": "apps/tsconfig.lib.json",
+          "generatePackageJson": false
+        }
+      }
+    },
+    "sourceRoot": "apps/bin",
+    "implicitDependencies": [
+      "@matias-test/matias-test"
+    ]
+  },
+  "dependencies": {
+    "create-nx-workspace": "21.1.2",
+    "tslib": "^2.3.0"
+  },
+  "bin": {
+    "create-rr7-shadcn-app": "./dist/bin/index.js"
+  }
+}

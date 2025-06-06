@@ -13,6 +13,7 @@
     "@react-router/node": "^7.2.0",
     "@react-router/serve": "^7.2.0",
     "class-variance-authority": "^0.7.1",
+    "create-nx-workspace": "21.1.2",
     "immer": "^10.1.1",
     "isbot": "^4.4.0",
     "lucide-react": "^0.511.0",
@@ -65,11 +66,26 @@
     "tsx": "^4.19.4",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.19.0",
+    "verdaccio": "^6.0.5",
     "vite": "^6.0.0",
     "vitest": "^3.0.0"
   },
   "workspaces": [
     "apps/*",
-    "tools/*"
-  ]
+    "tools/*",
+    "apps"
+  ],
+  "nx": {
+    "includedScripts": [],
+    "targets": {
+      "local-registry": {
+        "executor": "@nx/js:verdaccio",
+        "options": {
+          "port": 4873,
+          "config": ".verdaccio/config.yml",
+          "storage": "tmp/local-registry/storage"
+        }
+      }
+    }
+  }
 }
