@@ -1,0 +1,17 @@
+{
+  "name": "create-rr7-shadcn-app",
+  "version": "0.0.1",
+  "type": "module",
+  "module": "./dist/index.js",
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "dependencies": {
+    "create-nx-workspace": "21.1.2",
+    "tslib": "^2.3.0"
+  },
+  "bin": {
+    "create-rr7-shadcn-app": "./dist/bin/index.js"
+  }
+}
