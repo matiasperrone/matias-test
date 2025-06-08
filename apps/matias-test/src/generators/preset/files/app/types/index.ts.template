@@ -1,0 +1,18 @@
+// Shared TypeScript interfaces for the application
+
+// User data interface
+export interface UserData {
+  readonly id: string;
+  name: string;
+  email: string;
+  age: number;
+  bio: string;
+}
+
+// Form validation errors interface
+export interface ValidationErrors {
+  name?: string;
+  email?: string;
+  age?: string;
+  bio?: string;
+}

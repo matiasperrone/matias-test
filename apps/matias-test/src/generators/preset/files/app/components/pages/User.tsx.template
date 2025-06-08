@@ -1,0 +1,55 @@
+import React from 'react';
+import { Link, useParams } from 'react-router';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui';
+
+const User: React.FC = () => {
+  const { id } = useParams();
+
+  // Mock user data
+  const user = {
+    id,
+    name: 'John Doe',
+    email: 'john@example.com',
+    age: 30,
+    bio: 'Software developer with a passion for React and TypeScript.'
+  };
+
+  return (
+    <div className="container mx-auto p-6 max-w-6xl">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl">User Profile</CardTitle>
+          <CardDescription>View user details</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <h3 className="font-semibold text-lg">{user.name}</h3>
+            <p className="text-muted-foreground">{user.email}</p>
+          </div>
+
+          <div>
+            <p><strong>Age:</strong> {user.age}</p>
+            <p><strong>Bio:</strong> {user.bio}</p>
+          </div>
+
+          <div className="pt-6 space-x-4">
+            <Link
+              to={`/users/${id}/edit`}
+              className="text-primary hover:text-primary/80 underline-offset-4 hover:underline"
+            >
+              Edit User
+            </Link>
+            <Link
+              to="/users"
+              className="text-primary hover:text-primary/80 underline-offset-4 hover:underline"
+            >
+              ← Back to Users
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default User;

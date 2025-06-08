@@ -1,0 +1,36 @@
+import React from 'react';
+import { Link, useParams } from 'react-router';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from '@/components/ui';
+
+const UserEdit: React.FC = () => {
+  const { id } = useParams();
+
+  return (
+    <div className="container mx-auto p-6 max-w-6xl">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl">Edit User</CardTitle>
+          <CardDescription>Update user information</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p>Edit form for user {id} would go here.</p>
+          <p className="text-muted-foreground">
+            This is a placeholder for the user edit functionality.
+          </p>
+
+          <div className="pt-6 space-x-4">
+            <Button>Save Changes</Button>
+            <Link
+              to={`/users/${id}`}
+              className="text-primary hover:text-primary/80 underline-offset-4 hover:underline"
+            >
+              Cancel
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default UserEdit;

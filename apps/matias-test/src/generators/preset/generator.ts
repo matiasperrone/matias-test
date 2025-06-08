@@ -11,12 +11,25 @@ export async function presetGenerator(
   tree: Tree,
   options: PresetGeneratorSchema
 ) {
-  const projectRoot = `libs/${options.name}`;
+  const projectRoot = `apps/${options.name}`;
   addProjectConfiguration(tree, options.name, {
     root: projectRoot,
-    projectType: 'library',
-    sourceRoot: `${projectRoot}/src`,
-    targets: {},
+    projectType: 'application',
+    sourceRoot: `${projectRoot}/app`,
+    targets: {
+      build: {
+        executor: '@react-router/dev:build',
+        options: {},
+      },
+      dev: {
+        executor: '@react-router/dev:dev',
+        options: {},
+      },
+      serve: {
+        executor: '@react-router/dev:serve',
+        options: {},
+      },
+    },
   });
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, options);
   await formatFiles(tree);
